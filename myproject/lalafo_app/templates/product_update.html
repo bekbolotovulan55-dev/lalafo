@@ -1,0 +1,252 @@
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Редактировать объявление</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
+
+    <style>
+        input:not([type="checkbox"]):not([type="file"]),
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            margin-top: 6px;
+            border: 1px solid #d1fae5;
+            border-radius: 12px;
+            outline: none;
+            background: white;
+            color: #1e293b;
+            transition: 0.2s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #059669;
+            box-shadow: 0 0 0 3px #d1fae5;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            margin-top: 8px;
+            padding: 12px;
+            border: 1px dashed #a7f3d0;
+            border-radius: 12px;
+            background: #f0fdf4;
+        }
+
+        input[type="checkbox"] {
+            accent-color: #059669;
+            width: 17px;
+            height: 17px;
+            margin-right: 8px;
+        }
+
+        label {
+            display: inline-block;
+            margin-top: 12px;
+            color: #334155;
+            font-weight: 700;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        ul.errorlist {
+            color: #dc2626;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-slate-800 min-h-screen">
+
+    <!-- HEADER -->
+    <header class="bg-white border-b border-slate-100">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+
+            <a href="{% url 'product_list' %}"
+               class="flex items-center gap-3">
+
+                <div class="w-11 h-11 bg-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-100">
+                    <i class="fa-solid fa-store text-yellow-300 text-xl"></i>
+                </div>
+
+                <span class="font-black text-xl text-slate-900">
+                    Объявления
+                </span>
+            </a>
+
+            <a href="{% url 'product_list' %}"
+               class="text-sm font-bold text-emerald-600 hover:text-emerald-700">
+                <i class="fa-solid fa-arrow-left mr-1"></i>
+                Все товары
+            </a>
+
+        </div>
+    </header>
+
+
+    <!-- MAIN -->
+    <main class="max-w-3xl mx-auto px-4 py-10">
+
+        <!-- Заголовок -->
+        <div class="text-center mb-8">
+
+            <div class="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-pen-to-square text-3xl text-emerald-600"></i>
+            </div>
+
+            <p class="text-sm font-bold text-emerald-600 uppercase tracking-wider mb-2">
+                Marketplace
+            </p>
+
+            <h1 class="text-3xl sm:text-4xl font-black text-slate-900">
+                Редактировать объявление
+            </h1>
+
+            <p class="text-slate-400 mt-3">
+                Измени информацию о своём товаре
+            </p>
+
+        </div>
+
+
+        <!-- Форма -->
+        <div class="bg-white border border-emerald-100 rounded-3xl p-5 sm:p-8 shadow-xl shadow-emerald-50">
+
+            <form method="post" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="bg-red-50 text-red-600 p-4 rounded-xl mb-5">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                {% for field in form %}
+
+                    <div class="mb-4">
+
+                        <label for="{{ field.id_for_label }}">
+
+                            {% if field.name == 'product_name' %}
+                                <i class="fa-solid fa-tag text-emerald-600 mr-2"></i>
+                                Название товара
+
+                            {% elif field.name == 'price' %}
+                                <i class="fa-solid fa-money-bill-wave text-emerald-600 mr-2"></i>
+                                Цена (сом)
+
+                            {% elif field.name == 'category' %}
+                                <i class="fa-solid fa-layer-group text-emerald-600 mr-2"></i>
+                                Категория
+
+                            {% elif field.name == 'phone_number' %}
+                                <i class="fa-solid fa-phone text-emerald-600 mr-2"></i>
+                                Номер телефона
+
+                            {% elif field.name == 'city' %}
+                                <i class="fa-solid fa-location-dot text-emerald-600 mr-2"></i>
+                                Город
+
+                            {% elif field.name == 'type' %}
+                                <i class="fa-solid fa-star text-yellow-500 mr-2"></i>
+                                Оригинальный товар
+
+                            {% elif field.name == 'product_image' %}
+                                <i class="fa-solid fa-image text-emerald-600 mr-2"></i>
+                                Фотография товара
+
+                            {% elif field.name == 'descriptions' %}
+                                <i class="fa-solid fa-align-left text-emerald-600 mr-2"></i>
+                                Описание
+
+                            {% elif field.name == 'number_product' %}
+                                <i class="fa-solid fa-hashtag text-emerald-600 mr-2"></i>
+                                Номер товара
+
+                            {% else %}
+                                {{ field.label }}
+                            {% endif %}
+
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <p class="text-xs text-slate-400 mt-1">
+                                {{ field.help_text }}
+                            </p>
+                        {% endif %}
+
+                        {% if field.errors %}
+                            <div class="text-sm text-red-600 mt-2">
+                                {{ field.errors }}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+                {% endfor %}
+
+
+                <!-- Кнопки -->
+                <div class="flex flex-col sm:flex-row gap-3 mt-8 pt-6 border-t border-slate-100">
+
+                    <button type="submit"
+                            class="flex-1 flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-300 text-emerald-950 font-black py-3.5 px-6 rounded-xl shadow-md transition-all hover:-translate-y-0.5">
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Сохранить изменения
+
+                    </button>
+
+                    <a href="{% url 'product_list' %}"
+                       class="flex-1 flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-xl transition-all">
+
+                        <i class="fa-solid fa-xmark"></i>
+                        Отмена
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <p class="text-center text-sm text-slate-400 mt-6">
+            <i class="fa-solid fa-circle-info text-emerald-500 mr-1"></i>
+            После сохранения изменения появятся в объявлении.
+        </p>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-100 mt-8">
+        <div class="max-w-5xl mx-auto px-4 py-6 text-center text-sm text-slate-400">
+            © 2026 Объявления
+            <span class="mx-1">·</span>
+            Сделано с <i class="fa-solid fa-heart text-yellow-400"></i>
+        </div>
+    </footer>
+
+</body>
+</html>
+```

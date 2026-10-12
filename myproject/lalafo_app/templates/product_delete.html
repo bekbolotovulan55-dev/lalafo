@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Удаление объявления</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
+</head>
+
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- HEADER -->
+    <header class="bg-white border-b border-slate-100">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+
+            <a href="{% url 'product_list' %}"
+               class="flex items-center gap-3">
+
+                <div class="w-11 h-11 bg-emerald-600 rounded-xl
+                            flex items-center justify-center">
+                    <i class="fa-solid fa-store text-yellow-300 text-xl"></i>
+                </div>
+
+                <span class="font-black text-xl">Объявления</span>
+            </a>
+
+            <a href="{% url 'product_list' %}"
+               class="text-sm font-bold text-emerald-600 hover:text-emerald-700">
+                <i class="fa-solid fa-arrow-left mr-1"></i>
+                Все товары
+            </a>
+
+        </div>
+    </header>
+
+
+    <!-- DELETE CONFIRMATION -->
+    <main class="flex-grow flex items-center justify-center px-4 py-12">
+
+        <div class="w-full max-w-lg bg-white rounded-3xl
+                    border border-slate-100 shadow-xl
+                    shadow-slate-200/60 p-6 sm:p-10 text-center">
+
+            <!-- ICON -->
+            <div class="w-20 h-20 mx-auto mb-6 rounded-3xl
+                        bg-red-50 flex items-center justify-center">
+
+                <i class="fa-solid fa-trash-can text-red-500 text-3xl"></i>
+
+            </div>
+
+            <!-- TITLE -->
+            <h1 class="text-2xl sm:text-3xl font-black text-slate-900">
+                Удалить объявление?
+            </h1>
+
+            <p class="text-slate-500 mt-3 leading-relaxed">
+                Ты действительно хочешь удалить это объявление?
+                Это действие нельзя будет отменить.
+            </p>
+
+            <!-- PRODUCT NAME -->
+            <div class="mt-6 p-4 rounded-2xl bg-slate-50
+                        border border-slate-100">
+
+                <p class="text-xs uppercase tracking-wider
+                          text-slate-400 font-bold mb-1">
+                    Объявление
+                </p>
+
+                <p class="text-lg font-black text-slate-800">
+                    {{ product.product_name }}
+                </p>
+
+                <p class="text-emerald-600 font-bold mt-1">
+                    {{ product.price }} сом
+                </p>
+
+            </div>
+
+            <!-- FORM -->
+            <form method="post" class="mt-8 space-y-3">
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="w-full bg-red-500 hover:bg-red-600
+                           text-white font-black py-4 px-6
+                           rounded-2xl flex items-center
+                           justify-center gap-3
+                           shadow-lg shadow-red-100
+                           transition-all duration-300
+                           hover:-translate-y-1">
+
+                    <i class="fa-solid fa-trash-can"></i>
+                    Да, удалить объявление
+
+                </button>
+
+                <a
+                    href="{% url 'product_detail' product.pk %}"
+                    class="w-full bg-emerald-50 hover:bg-emerald-100
+                           text-emerald-700 font-bold py-4 px-6
+                           rounded-2xl flex items-center
+                           justify-center gap-3
+                           transition-all duration-300">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Нет, вернуться назад
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-100 bg-white">
+        <div class="max-w-6xl mx-auto px-4 py-6
+                    text-center text-slate-400 text-sm">
+            © 2026 Объявления. Все права защищены.
+        </div>
+    </footer>
+
+</body>
+</html>

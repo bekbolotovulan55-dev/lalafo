@@ -1,0 +1,347 @@
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Объявления</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
+</head>
+
+<body class="bg-white text-slate-800 min-h-screen">
+
+<!-- ================= HEADER ================= -->
+
+<header class="bg-white border-b border-slate-100 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4">
+
+        <div class="flex items-center justify-between gap-4">
+
+            <!-- Логотип -->
+            <a href="{% url 'product_list' %}"
+               class="flex items-center gap-3 shrink-0">
+
+                <div class="w-11 h-11 bg-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-200">
+                    <i class="fa-solid fa-store text-yellow-300 text-xl"></i>
+                </div>
+
+                <div>
+                    <h1 class="font-black text-xl text-slate-900">
+                        Объявления
+                    </h1>
+
+                    <p class="text-xs text-slate-400">
+                        Найди то, что ищешь
+                    </p>
+                </div>
+
+            </a>
+
+            <!-- Кнопки -->
+            <div class="flex items-center gap-2 sm:gap-3">
+
+                <!-- Создать объявление -->
+                <a href="{% url 'product_create' %}"
+                   class="flex items-center gap-2 bg-yellow-400 hover:bg-yellow-300 text-emerald-950 font-bold px-3 sm:px-5 py-2.5 rounded-xl transition-all duration-300 shadow-md">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    <span class="hidden sm:block">
+                        Создать
+                    </span>
+                </a>
+
+                <!-- Категории -->
+                <a href="{% url 'category_list' %}"
+                   class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 sm:px-5 py-2.5 rounded-xl transition-all duration-300 shadow-md shadow-emerald-100">
+
+                    <i class="fa-solid fa-layer-group text-yellow-300"></i>
+
+                    <span class="hidden sm:block">
+                        Категории
+                    </span>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="max-w-7xl mx-auto px-4 py-10">
+
+    <!-- Заголовок -->
+    <div class="flex items-end justify-between mb-8">
+
+        <div>
+            <div class="flex items-center gap-2 mb-2">
+
+                <span class="w-2 h-7 bg-yellow-400 rounded-full"></span>
+
+                <span class="text-sm font-bold text-emerald-600 uppercase tracking-wider">
+                    Marketplace
+                </span>
+
+            </div>
+
+            <h2 class="text-3xl sm:text-4xl font-black text-slate-900">
+                Свежие объявления
+            </h2>
+
+            <p class="text-slate-400 mt-2">
+                Новые товары от пользователей
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- ================= PRODUCTS ================= -->
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+        {% for i in products %}
+
+        <article class="group bg-white rounded-2xl border border-slate-100 overflow-hidden hover:border-emerald-200 hover:shadow-2xl hover:shadow-emerald-100/60 hover:-translate-y-1 transition-all duration-300">
+
+            <!-- Фото -->
+            <a href="{% url 'product_detail' i.pk %}" class="block">
+
+                <div class="relative h-60 bg-slate-50 overflow-hidden">
+
+                    {% if i.product_image %}
+
+                        <img
+                            src="{{ i.product_image.url }}"
+                            alt="{{ i.product_name }}"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        >
+
+                    {% else %}
+
+                        <div class="w-full h-full flex flex-col items-center justify-center text-slate-300">
+
+                            <div class="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mb-3">
+                                <i class="fa-solid fa-image text-2xl text-emerald-300"></i>
+                            </div>
+
+                            <span class="text-sm">
+                                Нет фотографии
+                            </span>
+
+                        </div>
+
+                    {% endif %}
+
+                    <!-- Категория -->
+                    {% if i.category %}
+
+                    <div class="absolute top-3 left-3 bg-white/95 backdrop-blur text-emerald-700 text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm">
+
+                        <i class="fa-solid fa-tag mr-1 text-yellow-500"></i>
+
+                        {{ i.category.category_name }}
+
+                    </div>
+
+                    {% endif %}
+
+                    <!-- Оригинал -->
+                    {% if i.type %}
+
+                    <div class="absolute top-3 right-3 bg-yellow-400 text-emerald-950 text-xs font-black px-3 py-1.5 rounded-lg shadow-md">
+
+                        <i class="fa-solid fa-star mr-1"></i>
+                        Оригинал
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </a>
+
+
+            <!-- Информация -->
+            <div class="p-5">
+
+                <!-- Цена -->
+                <div class="flex items-center justify-between mb-2">
+
+                    <div>
+                        <span class="text-2xl font-black text-emerald-600">
+                            {{ i.price }}
+                        </span>
+
+                        <span class="text-sm font-bold text-emerald-500">
+                            сом
+                        </span>
+                    </div>
+
+                    <span class="text-xs text-slate-400">
+                        #{{ i.number_product }}
+                    </span>
+
+                </div>
+
+
+                <!-- Название -->
+                <a href="{% url 'product_detail' i.pk %}" class="block">
+
+                    <h3 class="font-bold text-lg text-slate-800 group-hover:text-emerald-600 transition-colors line-clamp-1">
+                        {{ i.product_name }}
+                    </h3>
+
+                </a>
+
+
+                <!-- Описание -->
+                {% if i.descriptions %}
+
+                <p class="text-sm text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+                    {{ i.descriptions }}
+                </p>
+
+                {% else %}
+
+                <p class="text-sm text-slate-300 mt-2">
+                    Описание отсутствует
+                </p>
+
+                {% endif %}
+
+
+                <!-- Разделитель -->
+                <div class="border-t border-slate-100 my-4"></div>
+
+
+                <!-- Город и дата -->
+                <div class="flex items-center justify-between gap-2">
+
+                    <div class="flex items-center gap-2 text-sm text-slate-500 min-w-0">
+
+                        <div class="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-location-dot text-emerald-600"></i>
+                        </div>
+
+                        <span class="truncate">
+                            {{ i.city }}
+                        </span>
+
+                    </div>
+
+                    <span class="text-xs text-slate-400 shrink-0">
+                        {{ i.created_date|date:"d.m.Y" }}
+                    </span>
+
+                </div>
+
+
+                <!-- Кнопки -->
+                <div class="grid grid-cols-2 gap-2 mt-4">
+
+                    <a href="{% url 'product_detail' i.pk %}"
+                       class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl flex items-center justify-center gap-2 text-sm transition-all">
+
+                        <i class="fa-solid fa-eye"></i>
+                        Подробнее
+
+                    </a>
+
+                    {% if i.phone_number %}
+
+                    <a href="tel:{{ i.phone_number }}"
+                       class="bg-yellow-400 hover:bg-yellow-300 text-emerald-950 font-bold py-2.5 rounded-xl flex items-center justify-center gap-2 text-sm transition-all">
+
+                        <i class="fa-solid fa-phone"></i>
+                        Позвонить
+
+                    </a>
+
+                    {% else %}
+
+                    <a href="{% url 'product_detail' i.pk %}"
+                       class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-2.5 rounded-xl flex items-center justify-center gap-2 text-sm transition-all">
+
+                        <i class="fa-solid fa-eye"></i>
+                        Смотреть
+
+                    </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        {% empty %}
+
+        <!-- Пустой список -->
+        <div class="col-span-full py-20 text-center border-2 border-dashed border-emerald-100 rounded-3xl">
+
+            <div class="w-20 h-20 bg-emerald-50 rounded-2xl mx-auto flex items-center justify-center mb-5">
+                <i class="fa-solid fa-box-open text-3xl text-emerald-400"></i>
+            </div>
+
+            <h3 class="text-xl font-black text-slate-700">
+                Товаров пока нет
+            </h3>
+
+            <p class="text-slate-400 mt-2">
+                Здесь появятся новые объявления.
+            </p>
+
+            <a href="{% url 'product_create' %}"
+               class="inline-flex items-center gap-2 mt-6 bg-yellow-400 hover:bg-yellow-300 text-emerald-950 font-bold px-6 py-3 rounded-xl transition-all">
+
+                <i class="fa-solid fa-plus"></i>
+                Создать первое объявление
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="border-t border-slate-100 mt-10">
+
+    <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-sm text-slate-400">
+
+        <span>
+            © 2026 Объявления
+        </span>
+
+        <span class="flex items-center gap-1">
+            Сделано с
+            <i class="fa-solid fa-heart text-yellow-400"></i>
+        </span>
+
+    </div>
+
+</footer>
+
+</body>
+</html>
+```
